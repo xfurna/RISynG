@@ -1,4 +1,7 @@
 #!/bin/bash
+mkdir labels
+mkdir Gmat
+mkdir intWA
 echo "OV"
 python3 generate_G.py -d OV -m 1 -b 1
 python3 generate_G.py -d OV -m 2 -b 1
