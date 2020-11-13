@@ -62,6 +62,10 @@ if __name__ == "__main__":
     filename = "intWA/dat-" + pargs.dataset
     np.savetxt(filename, WA)
     print("[DATA SAVED] ", filename, "\n")
+
+    labelFile = "labels/labels-" + pargs.dataset
+    np.savetxt(labelFile, labels)
+    print("[LABELFILE SAVED] ", labelFile, "\n")
     print(
         pargs.dataset + ":  FINAL-SILHOUETTE\t\tFINAL-FSCORE\n", s_score, ",\t", arr[2]
     )
