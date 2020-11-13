@@ -1,3 +1,3 @@
-from . import glkpca 
-from . import kernel 
-from . import laplacian 
+from . import glkpca
+from . import kernel
+from . import laplacian
