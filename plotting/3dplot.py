@@ -8,11 +8,10 @@ from mpl_toolkits.mplot3d import Axes3D
 data="LGG"
 tr=pd.read_csv("//hdd/Ztudy/BTP/code/CoALa/.data/LGG/labels267.csv",sep=",").to_numpy()
 tr=tr[:,1].astype("int32")
-# risyng: u = pd.read_csv("/hdd/Ztudy/BTP/code/algoTrials/intWA/dat-"+data,sep=' ',header=None).to_numpy()
+u = pd.read_csv("/hdd/Ztudy/BTP/code/algoTrials/intWA/dat-"+data,sep=' ',header=None).to_numpy()
 # SNF: u=pd.read_csv("/hdd/Ztudy/BTP/code/algoTrials/plotting/outfolders/eigen_vectors/LGG/SNF_vector_lgg",sep=' ',header=None).to_numpy()
 # coala: u=pd.read_csv("/hdd/Ztudy/BTP/code/algoTrials/plotting/outfolders/eigen_vectors/LGG/JointU_LGG.txt",sep=' ',header=None).to_numpy()
-# sure: u=pd.read_csv("/hdd/Ztudy/BTP/code/algoTrials/plotting/outfolders/eigen_vectors/LGG/sure_LGG.txt",sep=' ',header=None).to_numpy()
-u=pd.read_csv("/hdd/Ztudy/BTP/code/algoTrials/plotting/outfolders/icluster/expZ_iclust_LGG",sep=' ',header=None).to_numpy()
+# u=pd.read_csv("/hdd/Ztudy/BTP/code/algoTrials/plotting/outfolders/eigen_vectors/LGG/sure_LGG.txt",sep=' ',header=None).to_numpy()
 
 
 # data="CESC"
@@ -57,13 +56,28 @@ s=20
 # ax.scatter3D(u[np.where(tr==1),0],u[np.where(tr==1),1],s=s,marker='o')
 # ax.scatter3D(u[np.where(tr==2),0],u[np.where(tr==2),1],s=s,marker='v')
 
-ax.scatter3D(u[np.where(tr==1),0],u[np.where(tr==1),1],u[np.where(tr==1),2],s=s,marker='o')
-ax.scatter3D(u[np.where(tr==2),0],u[np.where(tr==2),1],u[np.where(tr==2),2],s=s,marker='v')
-ax.scatter3D(u[np.where(tr==3),0],u[np.where(tr==3),1],u[np.where(tr==3),2],s=s,marker='s')
-ax.scatter3D(u[np.where(tr==4),0],u[np.where(tr==4),1],u[np.where(tr==4),2],s=s,marker='p')
+c1=[np.sum(u[np.where(tr==1),0])/u[np.where(tr==1),0].shape[1],np.sum(u[np.where(tr==1),1])/u[np.where(tr==1),0].shape[1],np.sum(u[np.where(tr==1),2])/u[np.where(tr==1),0].shape[1]]
+c2=[np.sum(u[np.where(tr==2),0])/u[np.where(tr==2),0].shape[1],np.sum(u[np.where(tr==2),1])/u[np.where(tr==2),0].shape[1],np.sum(u[np.where(tr==2),2])/u[np.where(tr==2),0].shape[1]]
+c3=[np.sum(u[np.where(tr==3),0])/u[np.where(tr==3),0].shape[1],np.sum(u[np.where(tr==3),1])/u[np.where(tr==3),0].shape[1],np.sum(u[np.where(tr==3),2])/u[np.where(tr==3),0].shape[1]]
+# c4=[np.sum(u[np.where(tr==4),0]),np.sum(u[np.where(tr==4),1]),np.sum(u[np.where(tr==4),2])]
 
+red='lightcoral'
+blue='cornflowerblue'
+green='yellowgreen'
+ax.scatter3D(u[np.where(tr==1),0],u[np.where(tr==1),1],u[np.where(tr==1),2],c=red,s=s,marker='o')
+ax.scatter3D(u[np.where(tr==2),0],u[np.where(tr==2),1],u[np.where(tr==2),2],c=green,s=s,marker='v')
+ax.scatter3D(u[np.where(tr==3),0],u[np.where(tr==3),1],u[np.where(tr==3),2],c=blue,s=s,marker='s')
+ax.scatter3D(u[np.where(tr==4),0],u[np.where(tr==4),1],u[np.where(tr==4),2],c='orange',s=s,marker='p')
+
+for (x,y,z) in zip(u[np.where(tr==1),0][0],u[np.where(tr==1),1][0],u[np.where(tr==1),2][0]):
+    plt.plot([x,c1[0]],[y,c1[1]],[z,c1[2]],red)
+for (x,y,z) in zip(u[np.where(tr==2),0][0],u[np.where(tr==2),1][0],u[np.where(tr==2),2][0]):
+    plt.plot([x,c2[0]],[y,c2[1]],[z,c2[2]],green)
+for (x,y,z) in zip(u[np.where(tr==3),0][0],u[np.where(tr==3),1][0],u[np.where(tr==3),2][0]):
+    plt.plot([x,c3[0]],[y,c3[1]],[z,c3[2]],blue)
 # plt.scatter(u[np.where(tr==1),0],u[np.where(tr==1),1],s=s,marker='o')
 # plt.scatter(u[np.where(tr==2),0],u[np.where(tr==2),1],s=s,marker='v')
 # plt.scatter(u[np.where(tr==3),0],u[np.where(tr==3),1],s=s,marker='s')
 # plt.scatter(u[np.where(tr==4),0],u[np.where(tr==4),1],s=s,marker='p')
+plt.axis('off')
 plt.show()
