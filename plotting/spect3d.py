@@ -417,8 +417,9 @@ def f_measure(tr, labels, k,avg='micro'):
         arr=f_measure4(tr,labels,avg)
     return arr 
 
-x1,x2,x3,x4,tr,k,name=read_CESC()
-X=x3
+x1,x2,tr,k,name=read_OV()
+# x1,x2,x3,x4,tr,k,name=read_LGG()
+X=x1
 sq_dists = pdist(X, 'sqeuclidean')
 
 mat_sq_dists = squareform(sq_dists)
@@ -445,15 +446,46 @@ labels=KMeans(n_clusters=k, random_state=0).fit(u[:,:k]).predict(u[:,:k])+1
 
 arr=f_measure(tr,labels,k)
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+# ax.view_init(14,-65)
 s=20
 # ax.scatter3D(u[np.where(tr==1),0],u[np.where(tr==1),1],s=s,marker='o')
 # ax.scatter3D(u[np.where(tr==2),0],u[np.where(tr==2),1],s=s,marker='v')
 
-ax.scatter3D(u[np.where(tr==1),0],u[np.where(tr==1),1],u[np.where(tr==1),2],s=s,marker='o')
-ax.scatter3D(u[np.where(tr==2),0],u[np.where(tr==2),1],u[np.where(tr==2),2],s=s,marker='v')
-ax.scatter3D(u[np.where(tr==3),0],u[np.where(tr==3),1],u[np.where(tr==3),2],s=s,marker='s')
-ax.scatter3D(u[np.where(tr==4),0],u[np.where(tr==4),1],u[np.where(tr==4),2],s=s,marker='p')
 
+p1={}
+p1['red']='lightcoral'
+p1['blue']='cornflowerblue'
+p1['green']='yellowgreen'
+p1['purple']='orchid'
+
+p2={}
+p2['red']='r'
+p2['blue']='b'
+p2['green']='g'
+p2['purple']='black'
+
+
+# ax.scatter3D(u[np.where(tr==1),0],u[np.where(tr==1),1],u[np.where(tr==1),2],c=p2['red'],s=s)
+# ax.scatter3D(u[np.where(tr==2),0],u[np.where(tr==2),1],u[np.where(tr==2),2],c=p2['green'],s=s)
+# ax.scatter3D(u[np.where(tr==3),0],u[np.where(tr==3),1],u[np.where(tr==3),2],c=p2['blue'],s=s)
+# ax.scatter3D(u[np.where(tr==4),0],u[np.where(tr==4),1],u[np.where(tr==4),2],c=p2['purple'],s=s)
+
+# ax.set_xlim([round(min(u[:,0]),2), round(max(u[:,0]),2)])
+# ax.set_ylim([round(min(u[:,1]),2), round(max(u[:,1]),2)])
+# ax.set_zlim([round(min(u[:,2]),2), round(max(u[:,2]),2)])
+# ax.scatter3D(0,0,0,s=0)
+
+plt.scatter(u[np.where(tr==1),0],u[np.where(tr==1),1],s=s)
+plt.scatter(u[np.where(tr==2),0],u[np.where(tr==2),1],s=s)
+# plt.scatter(u[np.where(tr==3),0],u[np.where(tr==3),1],s=s)
+# plt.scatter(u[np.where(tr==4),0],u[np.where(tr==4),1],s=s)
+
+
+# plt.axis('off')
+from matplotlib import rcParams
+rcParams['figure.dpi'] = 600
+print("max:",[max(u[:,0]),max(u[:,1]),max(u[:,2])])
+print("min:",[min(u[:,0]),min(u[:,1]),min(u[:,2])])
 plt.show()
