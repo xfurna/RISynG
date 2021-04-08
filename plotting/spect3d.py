@@ -479,13 +479,13 @@ p2['purple']='black'
 
 plt.scatter(u[np.where(tr==1),0],u[np.where(tr==1),1],s=s)
 plt.scatter(u[np.where(tr==2),0],u[np.where(tr==2),1],s=s)
-# plt.scatter(u[np.where(tr==3),0],u[np.where(tr==3),1],s=s)
-# plt.scatter(u[np.where(tr==4),0],u[np.where(tr==4),1],s=s)
+plt.scatter(u[np.where(tr==3),0],u[np.where(tr==3),1],s=s)
+plt.scatter(u[np.where(tr==4),0],u[np.where(tr==4),1],s=s)
 
 
 # plt.axis('off')
 from matplotlib import rcParams
-rcParams['figure.dpi'] = 600
+rcParams['figure.dpi'] = 1000
 print("max:",[max(u[:,0]),max(u[:,1]),max(u[:,2])])
 print("min:",[min(u[:,0]),min(u[:,1]),min(u[:,2])])
 plt.show()
