@@ -1,0 +1,3 @@
+[console_scripts]
+risyng = risyng.__main__:main
+

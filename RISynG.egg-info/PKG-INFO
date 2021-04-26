@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: RISynG
+Version: 0.0.1
+Summary: ---
+Home-page: https://github.com/evi1haxor/zettelkasten-ai/
+Author: xfurna
+Author-email: architdwivedi.off@gmail.com
+License: GPLv3
+Description: # algoTrials
+        
+        Don't judge, name's temporary.
+        
+        ## Flow Chart
+        
+        ![Flowchart](./flow_chart/Proposed.png)
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
