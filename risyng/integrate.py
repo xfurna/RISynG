@@ -57,6 +57,8 @@ def main(pargs):
 
     tr = rtr(data)
     labels = KMeans(n_clusters=k, random_state=0).fit(WA[:, :]).predict(WA[:, :]) + 1
+    int_labels = labels.astype(int)
+    print(int_labels[:10])
     s_score = silhouette_score(WA[:, :], labels)
     arr = f_measure(tr, labels, k)
     filename = "../intWA/dat-" + pargs.dataset
@@ -64,7 +66,7 @@ def main(pargs):
     print("[DATA SAVED] ", filename, "\n")
 
     labelFile = "../labels/labels-" + pargs.dataset
-    np.savetxt(labelFile, labels)
+    np.savetxt(labelFile, int_labels)
     print("[LABELFILE SAVED] ", labelFile, "\n")
     print(
         pargs.dataset + ":  FINAL-SILHOUETTE\t\tFINAL-FSCORE\n", s_score, ",\t", arr[2]
