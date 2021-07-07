@@ -1,8 +1,3 @@
-# from . import risyng_algo
-# from . import kernel
-# from . import laplacian
-# from . import generate_G
-# from . import integrate
 import risyng
 
 name = "risyng"

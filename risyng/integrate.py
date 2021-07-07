@@ -5,7 +5,6 @@ from util.read import read_tr as rtr
 from scipy.linalg import eigh
 from util.metrics import f_measure
 from sklearn.cluster import KMeans
-
 from util.metrics import silhouette as silhouette_score
 
 
@@ -27,11 +26,8 @@ def orthog(U, eps=1e-15):
 subpath = "../Gmat/mod-"
 classes = {"BRCA": 4, "CESC": 3, "LGG": 3, "OV": 2, "STAD": 4}
 
+
 def main(pargs):
-    # args = argparse.ArgumentParser()
-    # args.add_argument("--dataset", "-d", help="Which dataset?")
-    # args.add_argument("--order", "-o", nargs="?", help="In what oder?")
-    # pargs = args.parse_args()
     data = pargs.dataset
     k = classes[data]
     X = []
@@ -39,14 +35,11 @@ def main(pargs):
     for chari in list(pargs.order):
         file = subpath + chari + "-" + data
         X.append(pd.read_csv(file, delimiter=" ", header=None).to_numpy())
-        # print(X.shape)
-        # t=raw_input()
 
-    WA = np.zeros((len(X[0]), k))  # for wt sum of ortho u
+    WA = np.zeros((len(X[0]), k))
 
     for j in range(len(list(pargs.order))):
         s, u = eigh(X[j])
-
         U = u[:, :k]
         I = np.dot(WA.T, U)
         P = np.dot(WA, I)
@@ -56,9 +49,13 @@ def main(pargs):
         WA = WA + wg
 
     tr = rtr(data)
-    labels = KMeans(n_clusters=k, random_state=0).fit(WA[:, :]).predict(WA[:, :]) + 1
+    labels = (
+        KMeans(n_clusters=k, init="k-means++", n_init=10, random_state=3242)
+        .fit(WA[:, :])
+        .predict(WA[:, :])
+        + 1
+    )
     int_labels = labels.astype(int)
-    print(int_labels[:10])
     s_score = silhouette_score(WA[:, :], labels)
     arr = f_measure(tr, labels, k)
     filename = "../intWA/dat-" + pargs.dataset
@@ -67,7 +64,7 @@ def main(pargs):
 
     labelFile = "../labels/labels-" + pargs.dataset
     np.savetxt(labelFile, int_labels)
-    print("[LABELFILE SAVED] ", labelFile, "\n")
+    print("[LABEL FILE SAVED] ", labelFile, "\n")
     print(
         pargs.dataset + ":  FINAL-SILHOUETTE\t\tFINAL-FSCORE\n", s_score, ",\t", arr[2]
     )

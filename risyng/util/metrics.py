@@ -2,16 +2,6 @@ import numpy as np
 from sklearn.metrics import silhouette_score, jaccard_score, f1_score, accuracy_score
 from sklearn.metrics import precision_recall_fscore_support as prf
 
-# import matplotlib.pyplot as plt
-
-# from scipy.spatial.distance import pdist, squareform
-# from scipy.linalg import eigh
-# from sklearn import manifold, datasets
-
-# from sklearn.cluster import KMeans
-
-# from sklearn.cluster import SpectralClustering
-
 
 def silhouette(u, labels, k=None):
     if k:
@@ -253,12 +243,6 @@ def f_measure4(true, labels_pred, avg="micro"):
     labels_pred3 = np.where(labels_pred3 == 33, 2, labels_pred3)
     labels_pred3 = np.where(labels_pred3 == 44, 1, labels_pred3)
     maxf = max(maxf, prf(true, labels_pred3, average=avg)[2])
-    #     p_r_f_s = max(prf(true, labels_pred, average=avg),
-    #                    prf(true, labels_pred1, average=avg),
-    #                    prf(true, labels_pred2, average=avg),
-    #                    prf(true, labels_pred3, average=avg),
-    #                    prf(true, labels_pred4, average=avg),
-    #                    prf(true, labels_pred5, average=avg))
     return [1, 1, maxf]
 
 
@@ -300,18 +284,6 @@ def f_measure3(true, labels_pred, avg="micro"):
         prf(true, labels_pred4, average=avg),
         prf(true, labels_pred5, average=avg),
     )
-    #     a_score = max(accuracy_score(true, labels_pred),
-    #                    accuracy_score(true, labels_pred1),
-    #                    accuracy_score(true, labels_pred2),
-    #                    accuracy_score(true, labels_pred3),
-    #                    accuracy_score(true, labels_pred4),
-    #                    accuracy_score(true, labels_pred5))
-    #     j_score = max(jaccard_score(true, labels_pred, average='micro'),
-    #                jaccard_score(true, labels_pred1, average='micro'),
-    #                jaccard_score(true, labels_pred2, average='micro'),
-    #                jaccard_score(true, labels_pred3, average='micro'),
-    #                jaccard_score(true, labels_pred4, average='micro'),
-    #                jaccard_score(true, labels_pred5, average='micro'))
     return [0, 0, p_r_f_s[2]]
 
 
@@ -322,11 +294,6 @@ def f_measure2(true, labels_pred, avg="micro"):
     p_r_f_s = max(
         prf(true, labels_pred, average=avg), prf(true, labels_pred1, average=avg)
     )
-    #     a_score = max(accuracy_score(true, labels_pred),
-    #                    accuracy_score(true, labels_pred1))
-
-    #     j_score = max(jaccard_score(true, labels_pred, average='micro'),
-    #                jaccard_score(true, labels_pred1, average='micro'))
     return [0, 0, p_r_f_s[2]]
 
 

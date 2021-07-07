@@ -1,20 +1,27 @@
-# from scipy.spatial.distance import pdist, squareform
-# from scipy.linalg import eigh
-# from sklearn import manifold, datasets
-
 from sklearn.cluster import KMeans
-
-# from sklearn.cluster import SpectralClustering
-
 from util import read
 import risyng_algo
 import integrate
 from util.metrics import silhouette as silhouette_score
 from util.metrics import f_measure
 import numpy as np
+import argparse
 
 
-def execute(v=1, data="LGG", file=1, b=-1):
+def caller(X, b, k, tr):
+    s, u, G, kern = risyng_algo.RISynG(X, b)
+    labels = (
+        KMeans(n_clusters=k, init="k-means++", n_init=10, random_state=3242)
+        .fit(u[:, :k])
+        .predict(u[:, :k])
+        + 1
+    )
+    s_score = silhouette_score(u[:, :k], labels)
+    arr = f_measure(tr, labels, k)
+    return s_score, arr, labels, G, kern
+
+
+def execute(data="LGG", file=1, b=-1):
     if data == "LGG":
         x1, x2, x3, x4, tr, k, dat = read.read_LGG()
         nx1 = x1 - x1.mean(0)
@@ -76,86 +83,65 @@ def execute(v=1, data="LGG", file=1, b=-1):
 
     sil = []
     f = []
-    if b != -1:
-        if v == 1:
-            s, u, G = risyng_algo.RISynG_v1(X, b)
-            kern = X
-        elif v == 2:
-            s, u, G, kern = risyng_algo.RISynG_v2(X, b)
-        elif v == 3:
-            s, u, G, kern = risyng_algo.RISynG_v3(X, b)
-        elif v == 4:
-            s, u, G, kern = risyng_algo.RISynG_v4(X, b)
-        labels = (
-            KMeans(n_clusters=k, random_state=0).fit(u[:, :k]).predict(u[:, :k]) + 1
-        )
-        s_score = silhouette_score(u[:, :k], labels)
-        arr = f_measure(tr, labels, k)
+    if b != "N":
+        s_score, arr, labels, G, kern = caller(X, b, k, tr)
         sil.append(s_score)
         f.append(arr[2])
         sil = np.round(sil, 3)
         f = np.round(f, 3)
-        return sil, f, labels, kern, G
+
+        return sil[0], f[0], labels, kern, G, b
 
     for i in range(11):
-        if v == 1:
-            s, u, G = risyng_algo.RISynG_v1(X, i / 10)
-            kern = X
-        elif v == 2:
-            s, u, G, kern = risyng_algo.RISynG_v2(X, i / 10)
-        elif v == 3:
-            s, u, G, kern = risyng_algo.RISynG_v3(X, i / 10)
-        elif v == 4:
-            s, u, G, kern = risyng_algo.RISynG_v4(X, i / 10)
-
-        labels = (
-            KMeans(n_clusters=k, random_state=0).fit(u[:, :k]).predict(u[:, :k]) + 1
-        )
-        s_score = silhouette_score(u[:, :k], labels)
-        arr = f_measure(tr, labels, k)
+        s_score, arr, labels, G, kern = caller(X, i / 10, k, tr)
         sil.append(s_score)
         f.append(arr[2])
-    # print(arr,",",s_score)
-    # labels
-    # plt.scatter(list(range(11)),sil)
-    # plt.scatter(list(range(11)),np.array(f)/1.5)
+    inds = [(f[i], sil[j], j / 10) for j in range(11)]
+    inds.sort()
+    # print("inds:  ",inds)
     sil = np.round(sil, 3)
     f = np.round(f, 3)
-    return sil, f, labels, kern, G
+    t = 0
+    s_score, arr, labels, G, kern = caller(X, inds[t][2], k, tr)
+    return s_score, arr[2], labels, kern, G, inds[t][2]
 
-
-import argparse
 
 def main():
     args = argparse.ArgumentParser()
     args.add_argument(
-        "--fuse", "-f", nargs="?", default='n', help="Pass 'y' for fusion."
+        "--fuse", "-f", nargs="?", default="n", help="Pass 'y' for fusion."
     )
     args.add_argument("--dataset", "-d", nargs="?", help="Which dataset?")
-    args.add_argument("--modality", "-m", nargs="?", help="Which modality? (an integer)")
     args.add_argument(
-        "--bval", "-b", nargs="?", default=-1, help="At what b? (a number)"
+        "--modality", "-m", nargs="?", help="Which modality? (an integer)"
+    )
+    args.add_argument(
+        "--bval",
+        "-b",
+        nargs="?",
+        default="N",
+        help="At what b? (a number, or 'N' for default)",
     )
     args.add_argument("--order", "-o", nargs="?", help="In what oder?")
+    args.add_argument("--cluster", "-k", nargs="?", help="Number of clusters")
 
     pargs = args.parse_args()
 
-    if pargs.fuse=='y':
+    if pargs.fuse == "y":
         integrate.main(pargs)
         return
-
-    b = float(pargs.bval)
-    sil, f, labels, kern, G = execute(2, pargs.dataset, int(pargs.modality), b=b)
-    for i in range(len(sil)):
-        param = i / 10
-        if b != -1:
-            param = b
-            filename = "../Gmat/mod-" + str(pargs.modality) + "-" + pargs.dataset
-            np.savetxt(filename, G)
-            print("[DATA SAVED] ", filename, "\n")
-        print("b,\tsil,\tf")
-        print(param, ",", sil[i], ",", f[i])
+    if pargs.bval != "N":
+        b = float(pargs.bval)
+    else:
+        b = "N"
+    sil, f, labels, kern, G, param = execute(pargs.dataset, int(pargs.modality), b=b)
+    filename = "../Gmat/mod-" + str(pargs.modality) + "-" + pargs.dataset
+    np.savetxt(filename, G)
+    print("[DATA SAVED] ", filename, "\n")
+    print("b,\tsil,\tf")
+    print(param, ",", sil, ",", f)
     pass
+
 
 if __name__ == "__main__":
     main()

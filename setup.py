@@ -6,13 +6,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="RISynG",
-    version="0.0.1",
+    version="1.0.1s",
     author="xfurna",
     author_email="architdwivedi.off@gmail.com",
     description="---",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/evi1haxor/zettelkasten-ai/",
+    url="https://github.com/evi1haxor/RISynG/",
     packages=["risyng"],
     # packages=setuptools.find_packages(),
     license="GPLv3",
