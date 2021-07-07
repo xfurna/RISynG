@@ -1,4 +1,4 @@
-# RISyng
+# RISynG
 
 Recursive Integration of Synergised Graph Representations
 
