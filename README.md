@@ -34,4 +34,24 @@ There are five dataset in the `Datasets` folder- OV, STAD, CESC, LGG and BRCA. T
 ```
 $ ./run.sh dataset # replace 'dataset' with the name of the dataset
 ```
-Execution can be done for multiple dataset just by cascading the names one after the other. 
+Execution can be done for multiple dataset just by cascading the names one after the other.
+
+### MAN
+```
+usage: risyng [-h] [--fuse [FUSE]] [--dataset [DATASET]] [--modality [MODALITY]] [--bval [BVAL]] [--order [ORDER]] [--cluster [CLUSTER]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --fuse [FUSE], -f [FUSE]
+                        Pass 'y' for fusion.
+  --dataset [DATASET], -d [DATASET]
+                        Which dataset?
+  --modality [MODALITY], -m [MODALITY]
+                        Which modality? (an integer)
+  --bval [BVAL], -b [BVAL]
+                        At what b? (a number, or 'N' for default)
+  --order [ORDER], -o [ORDER]
+                        In what oder?
+  --cluster [CLUSTER], -k [CLUSTER]
+                        Number of clusters
+```
