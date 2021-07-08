@@ -8,7 +8,7 @@ while [ "$1" != "" ]; do
     # VALUE=`echo $1 | awk -F= '{print $2}'`
     case $PARAM in
         -h | --help)
-            echo "HELP!"
+            python3 risyng -h
             exit
             ;;
         OV)
