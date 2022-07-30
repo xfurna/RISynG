@@ -1,4 +1,5 @@
 # RISynG
+[![Generic badge](https://img.shields.io/badge/doi-10.1109%2FBIBM52615.2021.9669481-green)](https://ieeexplore.ieee.org/document/9669481)
 
 Recursive Integration of Synergised Graph Representations
 
