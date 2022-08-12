@@ -12,15 +12,13 @@ setuptools.setup(
     description="---",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/evi1haxor/RISynG/",
+    url="https://github.com/xfurna/RISynG/",
     packages=["risyng"],
-    # packages=setuptools.find_packages(),
     license="GPLv3",
     classifiers=[
         "Programming Language :: Python :: 3.8",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
-    # install_requires=["scikit-learn"],
     entry_points={"console_scripts": ["risyng=risyng.__main__:main",]},
 )
